@@ -1,4 +1,5 @@
 package io.githib.arkobat.smas;
 
-public class Have {
+// Have
+public class ChiSq {
 }
