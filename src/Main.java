@@ -1,8 +1,9 @@
-import io.githib.arkobat.smas.Program;
+import io.githib.arkobat.smas.test.KolmogorovSmirnov;
 
 public class Main {
+
     public static void main(String[] args) {
-        Program program = new Program();
-        program.compare();
+        new KolmogorovSmirnov(100).test();
     }
+
 }
