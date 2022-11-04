@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 // Kristian
-public class KolmogorovSmirnov {
+public class KolmogorovSmirnov implements Testable {
 
     private static final long SEED = 123456789L;
     private final IRandom random = new LinearCongruentialRandom(
