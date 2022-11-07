@@ -52,7 +52,7 @@ public class ChiSq implements Testable {
         for (int i = 0; i < numbers; i++) {
             values.add(random.nextDouble());
         }
-        chiSquared_v3(values);
+        chiSquared(values);
         values.clear();
         System.out.println();
 
@@ -60,7 +60,7 @@ public class ChiSq implements Testable {
         for (int i = 0; i < numbers; i++) {
             values.add(linearCongruential1.next());
         }
-        chiSquared_v3(values);
+        chiSquared(values);
         values.clear();
         System.out.println();
 
@@ -68,7 +68,7 @@ public class ChiSq implements Testable {
         for (int i = 0; i < numbers; i++) {
             values.add(linearCongruential2.next());
         }
-        chiSquared_v3(values);
+        chiSquared(values);
     }
 
     // H0 - Frequencies are the same
@@ -76,7 +76,7 @@ public class ChiSq implements Testable {
     // Confidence level - 0.05 (5% significant)
     // We will divide the interval [0, 1] into k = 10 intervals
 
-    private void chiSquared_v3(List<Double> randomNumbers) {
+    private void chiSquared(List<Double> randomNumbers) {
         // Divide the interval [0, 1] into k = 10 intervals
         int[] intervals = new int[k];
         for (double randomNumber : randomNumbers) {
