@@ -1,25 +1,22 @@
 package io.githib.arkobat.smas.test;
 
-import io.githib.arkobat.smas.DoubleComparator;
+import io.githib.arkobat.smas.ConsoleColor;
 import io.githib.arkobat.smas.IRandom;
 import io.githib.arkobat.smas.LinearCongruentialRandom;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.NoSuchElementException;
+import java.util.*;
 
 // Kristian
 public class KolmogorovSmirnov implements Testable {
 
+
+    private static final int A = 101_427;
+    private static final int C = 321;
+    private static final int M = (int) Math.pow(2, 16);
     private static final long SEED = 123456789L;
-    private final IRandom random = new LinearCongruentialRandom(
-            101_427,
-            321,
-            (int) Math.pow(2, 16),
-            SEED
-    );
+
     private final int numbers;
+    private final IRandom random = new LinearCongruentialRandom(A, C, M, SEED);
     private final List<Double> values = new ArrayList<>();
 
     public KolmogorovSmirnov(int numbers) {
@@ -27,37 +24,62 @@ public class KolmogorovSmirnov implements Testable {
     }
 
     public void test() {
+        System.out.println("============================");
+        System.out.println("     Kolmogorov Smirnov    ");
+        System.out.println("============================");
+
+        System.out.printf(" a:................. %d%n", A);
+        System.out.printf(" c:.................... %d%n", C);
+        System.out.printf(" m:.................. %d%n", M);
+        System.out.printf(" seed:........... %d%n", SEED);
+        System.out.printf(" Entries in test:...... %d%n", numbers);
+
         for (int i = 0; i < numbers; i++) {
             values.add(random.next());
         }
 
-        values.sort(new DoubleComparator());
+
+        Collections.sort(values);
 
         List<KolmogorovSmirnovRow> rows = new ArrayList<>();
-        final double n = values.size();
-        for (int i = 0; i < n; i++) {
+        for (int i = 0; i < numbers; i++) {
 
             double value = values.get(i);
-            double index = (double) i / n;
+            double index = (double) i / numbers;
             double dPlus = index - value;
-            double dMinus = value - (i - 1) / n;
+            double dMinus = value - (i - 1D) / numbers;
 
             rows.add(new KolmogorovSmirnovRow(value, index, dPlus, dMinus));
         }
 
         KolmogorovSmirnovRow dMax = rows.stream()
-                .max(Comparator.comparing(KolmogorovSmirnovRow::getdPlus))
+                .max(Comparator.comparing(KolmogorovSmirnovRow::getDPlus))
                 .orElseThrow(NoSuchElementException::new);
 
         KolmogorovSmirnovRow dMin = rows.stream()
-                .max(Comparator.comparing(KolmogorovSmirnovRow::getdMinus))
+                .max(Comparator.comparing(KolmogorovSmirnovRow::getDMinus))
                 .orElseThrow(NoSuchElementException::new);
 
-        double d = Math.max(dMax.getdPlus(), dMin.getdMinus());
+        double d = Math.max(dMax.getDPlus(), dMin.getDMinus());
+
+        SignificanceLevel significanceLevel = new SignificanceLevel(0.05);
+        double da = significanceLevel.getDA(numbers);
+
+        System.out.println("============================");
+        System.out.printf(" Significance Level:. %.3f%n", significanceLevel.a);
+        System.out.printf(" D:.................. %.3f%n", d);
+        System.out.printf(" Da:................. %.3f%n", da);
+        System.out.println("============================");
+        if (d <= da) { // Accepted
+            System.out.printf("%s  Accepted: %.3f <= %.3f  %s%n", ConsoleColor.GREEN_BACKGROUND, d, da, ConsoleColor.RESET);
+        } else { // Rejected
+            System.out.printf("%s  Rejected: %.3f > %.3f   %s%n", ConsoleColor.RED_BACKGROUND, d, da, ConsoleColor.RESET);
+        }
+        System.out.println("============================");
 
     }
 
-    private static class KolmogorovSmirnovRow{
+    private static class KolmogorovSmirnovRow {
 
         private final double value;
         private final double index;
@@ -79,12 +101,38 @@ public class KolmogorovSmirnov implements Testable {
             return index;
         }
 
-        public double getdPlus() {
+        public double getDPlus() {
             return dPlus;
         }
 
-        public double getdMinus() {
+        public double getDMinus() {
             return dMinus;
+        }
+    }
+
+    private static class SignificanceLevel {
+
+        private final double a;
+
+        private SignificanceLevel(double a) {
+            this.a = a;
+        }
+
+        public double getDA(int entries) {
+            if (entries <= 35) throw new IllegalArgumentException("Table is not defined for 35 or less entries ");
+
+            if (a == 0.20) {
+                return 1.07 / Math.sqrt(entries);
+            } else if (a == 0.15) {
+                return 1.14 / Math.sqrt(entries);
+            } else if (a == 0.10) {
+                return 1.22 / Math.sqrt(entries);
+            } else if (a == 0.05) {
+                return 1.36 / Math.sqrt(entries);
+            } else if (a == 0.01) {
+                return 1.63 / Math.sqrt(entries);
+            }
+            throw new IllegalArgumentException("Invalid a");
         }
     }
 
