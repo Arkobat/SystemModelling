@@ -3,13 +3,9 @@ package io.githib.arkobat.smas.test;
 import io.githib.arkobat.smas.IRandom;
 import io.githib.arkobat.smas.LinearCongruentialRandom;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 
 import static io.githib.arkobat.smas.Program.SEED;
-import static java.util.Map.entry;
 
 // Have
 public class ChiSq implements Testable {
@@ -44,8 +40,8 @@ public class ChiSq implements Testable {
     @Override
     public void test() {
         System.out.println("=======================================================\n" +
-                                                "Chi-Square test\n" +
-                            "=======================================================");
+                "Chi-Square test\n" +
+                "=======================================================");
         System.out.println("For " + numbers + " numbers, k = " + k + " and significance level = 5%\n");
 
         System.out.println("Java's random library:");
@@ -88,7 +84,7 @@ public class ChiSq implements Testable {
         int sum = 0;
         double chiSquared = 0;
         // What frequency do we expect in each interval?
-        double expected = numbers / k; // Since we have 10,000 numbers divided over 10 categories, we expect 1,000 numbers in each category
+        double expected = (double) numbers / k; // Since we have 10,000 numbers divided over 10 categories, we expect 1,000 numbers in each category
         for (int interval : intervals) {
             sum += interval;
             chiSquared += Math.pow(interval - expected, 2) / expected;
@@ -110,40 +106,42 @@ public class ChiSq implements Testable {
 
     private void checkChiSquared(double chiSquared) {
         // Create a map of degrees of freedom and critical values for 5% significance level
-        Map<Integer, Double> criticalValues = Map.ofEntries(
-                entry(1, 3.84),
-                entry(2, 5.99),
-                entry(3, 7.81),
-                entry(4, 9.49),
-                entry(5, 11.07),
-                entry(6, 12.59),
-                entry(7, 14.07),
-                entry(8, 15.51),
-                entry(9, 16.92),
-                entry(10, 18.31),
-                entry(11, 19.68),
-                entry(12, 21.03),
-                entry(13, 22.36),
-                entry(14, 23.68),
-                entry(15, 25.00),
-                entry(16, 26.30),
-                entry(17, 27.59),
-                entry(18, 28.87),
-                entry(19, 30.14),
-                entry(20, 31.41),
-                entry(22, 33.92),
-                entry(24, 36.42),
-                entry(26, 38.89),
-                entry(28, 41.34),
-                entry(30, 43.77),
-                entry(40, 55.76),
-                entry(50, 67.50),
-                entry(60, 79.08)
-        );
+        Map<Integer, Double> criticalValues = new HashMap<Integer, Double>() {
+            {
+                put(1, 3.84);
+                put(2, 5.99);
+                put(3, 7.81);
+                put(4, 9.49);
+                put(5, 11.07);
+                put(6, 12.59);
+                put(7, 14.07);
+                put(8, 15.51);
+                put(9, 16.92);
+                put(10, 18.31);
+                put(11, 19.68);
+                put(12, 21.03);
+                put(13, 22.36);
+                put(14, 23.68);
+                put(15, 25.00);
+                put(16, 26.30);
+                put(17, 27.59);
+                put(18, 28.87);
+                put(19, 30.14);
+                put(20, 31.41);
+                put(22, 33.92);
+                put(24, 36.42);
+                put(26, 38.89);
+                put(28, 41.34);
+                put(30, 43.77);
+                put(40, 55.76);
+                put(50, 67.50);
+                put(60, 79.08);
+            }
+        };
 
         double criticalValue = criticalValues.get(k - 1);
         boolean result = chiSquared <= criticalValue;
         System.out.println(chiSquared + " <= " + criticalValue + ": " + result);
-        System.out.println("The null hypothesis is therefore " + (result ? "not ":"")  + "rejected");
+        System.out.println("The null hypothesis is therefore " + (result ? "not " : "") + "rejected");
     }
 }
