@@ -37,8 +37,6 @@ public class KolmogorovSmirnov implements Testable {
         for (int i = 0; i < numbers; i++) {
             values.add(random.next());
         }
-
-
         Collections.sort(values);
 
         List<KolmogorovSmirnovRow> rows = new ArrayList<>();
@@ -47,7 +45,7 @@ public class KolmogorovSmirnov implements Testable {
             double value = values.get(i);
             double index = (double) i / numbers;
             double dPlus = index - value;
-            double dMinus = value - (i - 1D) / numbers;
+            double dMinus = value - (double) i / numbers;
 
             rows.add(new KolmogorovSmirnovRow(value, index, dPlus, dMinus));
         }
@@ -66,9 +64,10 @@ public class KolmogorovSmirnov implements Testable {
         double da = significanceLevel.getDA(numbers);
 
         System.out.println("============================");
-        System.out.printf(" Significance Level:. %.3f%n", significanceLevel.a);
-        System.out.printf(" D:.................. %.3f%n", d);
-        System.out.printf(" Da:................. %.3f%n", da);
+        System.out.printf(" Significance Level: %.4f%n", significanceLevel.a);
+        System.out.printf(" D+:................ %.4f%n", dMax.getDPlus());
+        System.out.printf(" D-:................ %.4f%n", dMin.getDMinus());
+        System.out.printf(" D:................. %.4f%n", d);
         System.out.println("============================");
         if (d <= da) { // Accepted
             System.out.printf("%s  Accepted: %.3f <= %.3f  %s%n", ConsoleColor.GREEN_BACKGROUND, d, da, ConsoleColor.RESET);
