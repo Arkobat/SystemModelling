@@ -1,30 +1,15 @@
 package io.githib.arkobat.smas.test;
 
-import io.githib.arkobat.smas.IRandom;
-import io.githib.arkobat.smas.LinearCongruentialRandom;
-
 import java.util.*;
 
+import static io.githib.arkobat.smas.Main.RANDOM_ONE;
+import static io.githib.arkobat.smas.Main.RANDOM_TWO;
 import static io.githib.arkobat.smas.Program.SEED;
 
 // Have
 public class ChiSq implements Testable {
 
     private final Random random = new Random(SEED);
-
-    private final IRandom linearCongruential1 = new LinearCongruentialRandom(
-            101_427,
-            321,
-            (int) Math.pow(2, 16),
-            SEED
-    );
-
-    public final IRandom linearCongruential2 = new LinearCongruentialRandom(
-            65_539,
-            0,
-            (int) Math.pow(2, 31),
-            SEED
-    );
 
     private final List<Double> values = new ArrayList<>();
 
@@ -54,7 +39,7 @@ public class ChiSq implements Testable {
 
         System.out.println("Default LCG settings:");
         for (int i = 0; i < numbers; i++) {
-            values.add(linearCongruential1.next());
+            values.add(RANDOM_ONE.get().next());
         }
         chiSquared(values);
         values.clear();
@@ -62,7 +47,7 @@ public class ChiSq implements Testable {
 
         System.out.println("LCG with the RANDU settings:");
         for (int i = 0; i < numbers; i++) {
-            values.add(linearCongruential2.next());
+            values.add(RANDOM_TWO.get().next());
         }
         chiSquared(values);
     }
