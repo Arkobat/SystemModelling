@@ -2,7 +2,6 @@ package io.githib.arkobat.smas.test;
 
 import io.githib.arkobat.smas.ConsoleColor;
 import io.githib.arkobat.smas.IRandom;
-import io.githib.arkobat.smas.LinearCongruentialRandom;
 
 import java.util.*;
 
@@ -16,10 +15,11 @@ public class KolmogorovSmirnov implements Testable {
     private static final long SEED = 123456789L;
 
     private final int numbers;
-    private final IRandom random = new LinearCongruentialRandom(A, C, M, SEED);
+    private final IRandom random;
     private final List<Double> values = new ArrayList<>();
 
-    public KolmogorovSmirnov(int numbers) {
+    public KolmogorovSmirnov(IRandom random, int numbers) {
+        this.random = random;
         this.numbers = numbers;
     }
 
