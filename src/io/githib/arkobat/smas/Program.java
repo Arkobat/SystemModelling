@@ -7,7 +7,7 @@ import java.util.function.Supplier;
 
 public class Program {
 
-    public static final long SEED = 987654321;
+    public static final long SEED = 123456789;
     private final IRandom linearCongruential1 = new LinearCongruentialRandom(
             101_427,
             321,

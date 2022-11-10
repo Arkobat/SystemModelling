@@ -22,7 +22,7 @@ public class ChiSq implements Testable {
     public final IRandom linearCongruential2 = new LinearCongruentialRandom(
             65_539,
             0,
-            (int) Math.pow(2, 31),
+            2147483648L,
             SEED
     );
 
