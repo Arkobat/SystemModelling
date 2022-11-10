@@ -10,14 +10,14 @@ public class Main {
     public static final Supplier<IRandom> RANDOM_ONE =() -> new LinearCongruentialRandom(
             101_427,
             321,
-            (int) Math.pow(2, 16),
+            (long) Math.pow(2, 16),
             SEED
     );
 
     public static final Supplier <IRandom> RANDOM_TWO = () -> new LinearCongruentialRandom(
             65_539,
             0,
-            (int) Math.pow(2, 31),
+            (long) Math.pow(2, 31),
             SEED
     );
 
@@ -26,7 +26,7 @@ public class Main {
         new KolmogorovSmirnov(RANDOM_TWO.get(), 100).test();
         System.out.println("\n\n");
 
-        new ChiSq(10_000, 10).test();
+        new ChiSq(RANDOM_ONE.get(), RANDOM_TWO.get(), 10_000, 10).test();
         System.out.println("\n\n");
 
         new Runs().test();

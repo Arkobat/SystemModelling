@@ -1,15 +1,11 @@
 package io.githib.arkobat.smas.test;
 
-import java.util.*;
+import io.githib.arkobat.smas.IRandom;
 
-import static io.githib.arkobat.smas.Main.RANDOM_ONE;
-import static io.githib.arkobat.smas.Main.RANDOM_TWO;
-import static io.githib.arkobat.smas.Program.SEED;
+import java.util.*;
 
 // Have
 public class ChiSq implements Testable {
-
-    private final Random random = new Random(SEED);
 
     private final List<Double> values = new ArrayList<>();
 
@@ -17,9 +13,13 @@ public class ChiSq implements Testable {
 
     private final int k;
 
-    public ChiSq(int numbers, int k) {
+    private final IRandom random_1, random_2;
+
+    public ChiSq(IRandom random_1, IRandom random_2, int numbers, int k) {
         this.numbers = numbers;
         this.k = k;
+        this.random_1 = random_1;
+        this.random_2 = random_2;
     }
 
     @Override
@@ -29,17 +29,9 @@ public class ChiSq implements Testable {
                 "=======================================================");
         System.out.println("For " + numbers + " numbers, k = " + k + " and significance level = 5%\n");
 
-        System.out.println("Java's random library:");
-        for (int i = 0; i < numbers; i++) {
-            values.add(random.nextDouble());
-        }
-        chiSquared(values);
-        values.clear();
-        System.out.println();
-
         System.out.println("Default LCG settings:");
         for (int i = 0; i < numbers; i++) {
-            values.add(RANDOM_ONE.get().next());
+            values.add(random_1.next());
         }
         chiSquared(values);
         values.clear();
@@ -47,7 +39,7 @@ public class ChiSq implements Testable {
 
         System.out.println("LCG with the RANDU settings:");
         for (int i = 0; i < numbers; i++) {
-            values.add(RANDOM_TWO.get().next());
+            values.add(random_2.next());
         }
         chiSquared(values);
     }
