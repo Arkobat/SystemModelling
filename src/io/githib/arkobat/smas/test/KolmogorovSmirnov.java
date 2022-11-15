@@ -8,12 +8,6 @@ import java.util.*;
 // Kristian
 public class KolmogorovSmirnov implements Testable {
 
-
-    private static final int A = 101_427;
-    private static final int C = 321;
-    private static final int M = (int) Math.pow(2, 16);
-    private static final long SEED = 123456789L;
-
     private final int numbers;
     private final IRandom random;
     private final List<Double> values = new ArrayList<>();
@@ -28,10 +22,10 @@ public class KolmogorovSmirnov implements Testable {
         System.out.println("     Kolmogorov Smirnov    ");
         System.out.println("============================");
 
-        System.out.printf(" a:................. %d%n", A);
-        System.out.printf(" c:.................... %d%n", C);
-        System.out.printf(" m:.................. %d%n", M);
-        System.out.printf(" seed:........... %d%n", SEED);
+        System.out.printf(" a:................. %d%n", random.getA());
+        System.out.printf(" c:.................... %d%n", random.getC());
+        System.out.printf(" m:.................. %d%n", random.getM());
+        System.out.printf(" seed:........... %d%n", random.getSeed());
         System.out.printf(" Entries in test:...... %d%n", numbers);
 
         for (int i = 0; i < numbers; i++) {
@@ -75,7 +69,6 @@ public class KolmogorovSmirnov implements Testable {
             System.out.printf("%s  Rejected: %.3f > %.3f   %s%n", ConsoleColor.RED_BACKGROUND, d, da, ConsoleColor.RESET);
         }
         System.out.println("============================");
-
     }
 
     private static class KolmogorovSmirnovRow {
@@ -134,5 +127,6 @@ public class KolmogorovSmirnov implements Testable {
             throw new IllegalArgumentException("Invalid a");
         }
     }
+
 
 }

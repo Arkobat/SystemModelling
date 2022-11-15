@@ -2,9 +2,7 @@ package io.githib.arkobat.smas;
 
 public class LinearCongruentialRandom implements IRandom {
 
-    private final int a, c;
-
-    private final long m;
+    private final long a, c, m, seed;
 
     private long prevResult;
 
@@ -16,6 +14,7 @@ public class LinearCongruentialRandom implements IRandom {
         this.a = a;
         this.c = c;
         this.m = m;
+        this.seed = seed;
         this.prevResult = seed;
     }
 
@@ -23,6 +22,26 @@ public class LinearCongruentialRandom implements IRandom {
     public double next() {
         prevResult = (a * prevResult + c) % m;
         return prevResult / (double) m;
+    }
+
+    @Override
+    public long getA() {
+        return a;
+    }
+
+    @Override
+    public long getC() {
+        return c;
+    }
+
+    @Override
+    public long getM() {
+        return m;
+    }
+
+    @Override
+    public long getSeed() {
+        return seed;
     }
 
 }
