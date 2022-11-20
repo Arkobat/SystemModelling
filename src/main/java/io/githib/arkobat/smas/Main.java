@@ -11,14 +11,14 @@ public class Main {
             101_427,
             321,
             (long) Math.pow(2, 16),
-            SEED
+            123456789
     );
 
     public static final Supplier <IRandom> RANDOM_TWO = () -> new LinearCongruentialRandom(
             65_539,
             0,
             (long) Math.pow(2, 31),
-            SEED
+            123456789
     );
 
     public static void main(String[] args) {
