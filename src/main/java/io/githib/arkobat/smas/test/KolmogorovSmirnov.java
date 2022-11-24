@@ -2,6 +2,9 @@ package io.githib.arkobat.smas.test;
 
 import io.githib.arkobat.smas.ConsoleColor;
 import io.githib.arkobat.smas.IRandom;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 import java.util.*;
 
@@ -18,9 +21,9 @@ public class KolmogorovSmirnov implements Testable {
     }
 
     public void test() {
-        System.out.println("============================");
-        System.out.println("     Kolmogorov Smirnov    ");
-        System.out.println("============================");
+        System.out.println("=============================");
+        System.out.println("     Kolmogorov Smirnov     ");
+        System.out.println("=============================");
 
         System.out.printf(" a:................. %d%n", random.getA());
         System.out.printf(" c:.................... %d%n", random.getC());
@@ -38,8 +41,8 @@ public class KolmogorovSmirnov implements Testable {
 
             double value = values.get(i);
             double index = (double) i / numbers;
-            double dPlus = index - value;
-            double dMinus = value - (double) i / numbers;
+            double dPlus = (( i+1D) / numbers) - value;
+            double dMinus = value - (double) (i) / numbers;
 
             rows.add(new KolmogorovSmirnovRow(value, index, dPlus, dMinus));
         }
@@ -57,20 +60,22 @@ public class KolmogorovSmirnov implements Testable {
         SignificanceLevel significanceLevel = new SignificanceLevel(0.05);
         double da = significanceLevel.getDA(numbers);
 
-        System.out.println("============================");
-        System.out.printf(" Significance Level: %.4f%n", significanceLevel.a);
-        System.out.printf(" D+:................ %.4f%n", dMax.getDPlus());
-        System.out.printf(" D-:................ %.4f%n", dMin.getDMinus());
-        System.out.printf(" D:................. %.4f%n", d);
-        System.out.println("============================");
+        System.out.println("=============================");
+        System.out.printf(" Significance Level: %.5f%n", significanceLevel.a);
+        System.out.printf(" D+:................ %.5f%n", dMax.getDPlus());
+        System.out.printf(" D-:................ %.5f%n", dMin.getDMinus());
+        System.out.printf(" D:................. %.5f%n", d);
+        System.out.println("=============================");
         if (d <= da) { // Accepted
             System.out.printf("%s  Accepted: %.3f <= %.3f  %s%n", ConsoleColor.GREEN_BACKGROUND, d, da, ConsoleColor.RESET);
         } else { // Rejected
             System.out.printf("%s  Rejected: %.3f > %.3f   %s%n", ConsoleColor.RED_BACKGROUND, d, da, ConsoleColor.RESET);
         }
-        System.out.println("============================");
+        System.out.println("=============================");
     }
 
+    @Getter
+    @AllArgsConstructor
     private static class KolmogorovSmirnovRow {
 
         private final double value;
@@ -78,37 +83,12 @@ public class KolmogorovSmirnov implements Testable {
         private final double dPlus;
         private final double dMinus;
 
-        public KolmogorovSmirnovRow(double a, double b, double c, double d) {
-            this.value = a;
-            this.index = b;
-            this.dPlus = c;
-            this.dMinus = d;
-        }
-
-        public double getValue() {
-            return value;
-        }
-
-        public double getIndex() {
-            return index;
-        }
-
-        public double getDPlus() {
-            return dPlus;
-        }
-
-        public double getDMinus() {
-            return dMinus;
-        }
     }
 
+    @RequiredArgsConstructor
     private static class SignificanceLevel {
 
         private final double a;
-
-        private SignificanceLevel(double a) {
-            this.a = a;
-        }
 
         public double getDA(int entries) {
             if (entries <= 35) throw new IllegalArgumentException("Table is not defined for 35 or less entries ");
