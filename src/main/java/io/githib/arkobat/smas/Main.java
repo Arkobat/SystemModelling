@@ -32,7 +32,8 @@ public class Main {
         new Runs(RANDOM_ONE.get(), RANDOM_TWO.get(), 10_000).test();
         System.out.println("\n\n");
 
-        new Autocorrelation().test();
+        new Autocorrelation(RANDOM_ONE.get(), 10_000, 3, 128).test();
+        new Autocorrelation(RANDOM_TWO.get(), 10_000, 3, 128).test();
     }
 
 }
