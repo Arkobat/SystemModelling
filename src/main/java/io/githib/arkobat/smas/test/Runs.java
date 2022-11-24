@@ -8,19 +8,16 @@ import java.util.Map;
 import io.githib.arkobat.smas.IRandom;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.ToString;
 
 // Anni
 public class Runs implements Testable {
 
-    // make list of 10000 random numbers
-    // make array/object of number of runs and length of runs
-    // count number of runs and length of runs
-    // Number of runs above/below n
-    // Compare count to expected value using known distribution
-
     private final int numbers;
     private final IRandom random_1, random_2;
     private final List<Double> values = new ArrayList<>();
+
+    List<Integer> lengthList = new ArrayList<>();
 
     public Runs(IRandom random_1, IRandom random_2, int numbers) {
         this.random_1 = random_1;
@@ -50,9 +47,6 @@ public class Runs implements Testable {
         values.clear();
     }
 
-    List<Integer> lengthList = new ArrayList<>();
-    Integer biggerThanX = 0;
-
     private void countRuns(List<Double> values) {
         int runs = 1;
         int length = 1;
@@ -67,21 +61,10 @@ public class Runs implements Testable {
                 runs++;
             }
         }
-        System.out.println("Total runs: " + lengthList.size());
-
-        // find out how many runs are bigger than x
-        for (Integer int1 : lengthList) {
-            if (int1 > 3) {
-                biggerThanX++;
-            }
-        }
         mapResults(lengthList);
-
-        System.out.println("There are: " + biggerThanX + " runs longer than 3");
         runs = 1;
         length = 1;
         lengthList.clear();
-        biggerThanX = 0;
     }
 
     private void mapResults(List<Integer> lengthList) {
@@ -94,7 +77,6 @@ public class Runs implements Testable {
             }
         }
         calculate(map);
-        System.out.println(map);
     }
 
     public static long factorial(int number) {
@@ -103,34 +85,38 @@ public class Runs implements Testable {
         for (int factor = 2; factor <= number; factor++) {
             result *= factor;
         }
-
         return result;
     }
 
     private void calculate(Map<Integer, Integer> lengthList) {
-        System.out.println("u suck");
-        final int n = 100;
+        final int n = 10000;
+        double sum = 0;
+        final List<Double> xList = new ArrayList<>();
         List<RunsResults> results2 = new ArrayList<>();
         for (Map.Entry<Integer, Integer> entry : lengthList.entrySet()) {
             int i = entry.getKey();
             int o = entry.getValue();
-            double e = 2 / factorial(i + 3) * (n *
+            double e = 2D / factorial(i + 3) * (n *
                     (Math.pow(i, 2) + 3 * i + 1) -
-                    (Math.pow(i, 3) + +3 *
-                            Math.pow(i, 2) - 4));
-            RunsResults results = new RunsResults(i, e, o, 0);
-            
+                    (Math.pow(i, 3) + +3 * Math.pow(i, 2) - 4));
+            double x = Math.pow(e - o, 2) / e;
+            RunsResults results = new RunsResults(i, e, o, x);
+            results2.add(results);
+            xList.add(x);
+            //get the sum of the x values in xList
+            sum = xList.stream().mapToDouble(Double::doubleValue).sum();
         }
-
+      //  System.out.println(results2 + "\n");
+        System.out.println("Chi^2 Value = " + sum);
     }
 
     @Getter
     @AllArgsConstructor
+    @ToString
     public class RunsResults {
         private int i;
         private double e;
         private int o;
-        private double eo;
-
+        private double x;
     }
 }
