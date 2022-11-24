@@ -29,7 +29,7 @@ public class Main {
         new ChiSq(RANDOM_ONE.get(), RANDOM_TWO.get(), 10_000, 10).test();
         System.out.println("\n\n");
 
-        new Runs().test();
+        new Runs(RANDOM_ONE.get(), RANDOM_TWO.get(), 10_000).test();
         System.out.println("\n\n");
 
         new Autocorrelation().test();
