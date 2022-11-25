@@ -8,7 +8,7 @@ import io.githib.arkobat.smas.IRandom;
 // Anton
 public class Autocorrelation implements Testable {
 
-    private final IRandom random;
+    private final io.githib.arkobat.smas.IRandom random;
     private final int numbers;
     private final int index;
     private final int lag;
@@ -44,6 +44,8 @@ public class Autocorrelation implements Testable {
 
         double rho = (1 / (M + 1)) * autocorrelation - 0.25;
 
+        System.out.println("rho: " + rho);
+
         double sigma = (Math.sqrt(13 * (double) M + 7)) / (12 * ((double) M + 1));
 
         double z0 = rho / sigma;
@@ -54,6 +56,16 @@ public class Autocorrelation implements Testable {
     private void populateValues() {
         for (int i = 0; i < numbers; i++) {
             values.add(random.next());
+        }
+    }
+
+    public void acceptOrReject(double z0) {
+        double za = 1.96;
+        System.out.print("The null hypothesis is ");
+        if (z0 < za && z0 > -za) {
+            System.out.println("not rejected");
+        } else {
+            System.out.println("rejected");
         }
     }
 
@@ -78,7 +90,11 @@ public class Autocorrelation implements Testable {
 
         populateValues();
 
-        System.out.println("z: " + getAutocorrelation(values));
+        double z0 = getAutocorrelation(values);
+
+        System.out.println("z0: " + z0);
+
+        acceptOrReject(z0);
 
     }
 }
