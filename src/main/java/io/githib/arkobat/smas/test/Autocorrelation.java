@@ -61,11 +61,10 @@ public class Autocorrelation implements Testable {
 
     public void acceptOrReject(double z0) {
         double za = 1.96;
-        System.out.print("The null hypothesis is ");
         if (z0 < za && z0 > -za) {
-            System.out.println("not rejected");
+            accept(-za + " <= " + String.format("%.2f", z0) + " <= " + za);
         } else {
-            System.out.println("rejected");
+            reject(-za + " > " + String.format("%.2f", z0) + " > " + za);
         }
     }
 
