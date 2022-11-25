@@ -4,11 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import io.githib.arkobat.smas.IRandom;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.ToString;
 
 // Anni
 public class Runs implements Testable {
@@ -16,7 +12,6 @@ public class Runs implements Testable {
     private final int numbers;
     private final IRandom random_1, random_2;
     private final List<Double> values = new ArrayList<>();
-
     int dof;
     List<Integer> lengthList = new ArrayList<>();
 
@@ -89,7 +84,6 @@ public class Runs implements Testable {
 
     public static long factorial(int number) {
         long result = 1;
-
         for (int factor = 2; factor <= number; factor++) {
             result *= factor;
         }
@@ -100,7 +94,6 @@ public class Runs implements Testable {
         final int n = 10000;
         double sum = 0;
         final List<Double> xList = new ArrayList<>();
-       // List<RunsResults> results2 = new ArrayList<>();
         for (Map.Entry<Integer, Integer> entry : lengthList.entrySet()) {
             int i = entry.getKey();
             int o = entry.getValue();
@@ -110,7 +103,6 @@ public class Runs implements Testable {
                             (Math.pow(i, 3) + 3 * Math.pow(i, 2) - i - 4));
             double x = Math.pow(e - o, 2) / e;
             xList.add(x);
-            // get the sum of the x values in xList
             sum = xList.stream().mapToDouble(Double::doubleValue).sum();
         }
         checkChiSquared(sum, xList.size());
