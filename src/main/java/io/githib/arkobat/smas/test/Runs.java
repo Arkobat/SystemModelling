@@ -128,8 +128,10 @@ public class Runs implements Testable {
         double criticalValue = criticalValues.get(dof);
         boolean result = chiSquared <= criticalValue;
         System.out.println("Chi-squared compared to the critical value:");
-        System.out.println(chiSquared + " <= " + criticalValue + ": " + result);
-        System.out.println("The null hypothesis is therefore " + (result ? "not " : "") + "rejected");
-        System.out.println();
+        if (result) {
+            accept(String.format("%.3f <= %.3f", chiSquared, criticalValue));
+        } else {
+            reject(String.format(" %.3f > %.3f", chiSquared, criticalValue));
+        }
     }
 }
