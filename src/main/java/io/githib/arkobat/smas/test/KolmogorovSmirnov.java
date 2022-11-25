@@ -64,9 +64,9 @@ public class KolmogorovSmirnov implements Testable {
         System.out.printf(" D:................. %.4f%n", d);
         System.out.println("============================");
         if (d <= da) { // Accepted
-            System.out.printf("%s  Accepted: %.3f <= %.3f  %s%n", ConsoleColor.GREEN_BACKGROUND, d, da, ConsoleColor.RESET);
+            accept(String.format("%.3f <= %.3f", d, da));
         } else { // Rejected
-            System.out.printf("%s  Rejected: %.3f > %.3f   %s%n", ConsoleColor.RED_BACKGROUND, d, da, ConsoleColor.RESET);
+            reject(String.format(" %.3f > %.3f", d, da));
         }
         System.out.println("============================");
     }

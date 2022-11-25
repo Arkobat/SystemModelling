@@ -118,7 +118,10 @@ public class ChiSq implements Testable {
 
         double criticalValue = criticalValues.get(k - 1);
         boolean result = chiSquared <= criticalValue;
-        System.out.println(chiSquared + " <= " + criticalValue + ": " + result);
-        System.out.println("The null hypothesis is therefore " + (result ? "not " : "") + "rejected");
+        if (result) {
+            accept(String.format("%.3f <= %.3f", chiSquared, criticalValue));
+        } else {
+            reject(String.format(" %.3f > %.3f", chiSquared, criticalValue));
+        }
     }
 }
