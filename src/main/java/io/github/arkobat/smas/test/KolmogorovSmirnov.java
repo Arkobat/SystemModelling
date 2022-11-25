@@ -1,7 +1,6 @@
-package io.githib.arkobat.smas.test;
+package io.github.arkobat.smas.test;
 
-import io.githib.arkobat.smas.ConsoleColor;
-import io.githib.arkobat.smas.IRandom;
+import io.github.arkobat.smas.IRandom;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

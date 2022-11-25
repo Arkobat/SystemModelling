@@ -1,6 +1,5 @@
 package io.github.arkobat.smas;
 
-import io.githib.arkobat.smas.LinearCongruentialRandom;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;

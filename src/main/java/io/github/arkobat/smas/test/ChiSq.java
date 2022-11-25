@@ -1,6 +1,6 @@
-package io.githib.arkobat.smas.test;
+package io.github.arkobat.smas.test;
 
-import io.githib.arkobat.smas.IRandom;
+import io.github.arkobat.smas.IRandom;
 
 import java.util.*;
 

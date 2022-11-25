@@ -1,14 +1,14 @@
-package io.githib.arkobat.smas.test;
+package io.github.arkobat.smas.test;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import io.githib.arkobat.smas.IRandom;
+import io.github.arkobat.smas.IRandom;
 
 // Anton
 public class Autocorrelation implements Testable {
 
-    private final io.githib.arkobat.smas.IRandom random;
+    private final IRandom random;
     private final int numbers;
     private final int index;
     private final int lag;

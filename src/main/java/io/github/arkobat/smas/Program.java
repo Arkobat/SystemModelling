@@ -1,4 +1,4 @@
-package io.githib.arkobat.smas;
+package io.github.arkobat.smas;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package io.githib.arkobat.smas;
+package io.github.arkobat.smas;
 
 public interface IRandom {
 

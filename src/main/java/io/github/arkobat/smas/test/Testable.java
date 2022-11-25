@@ -1,6 +1,6 @@
-package io.githib.arkobat.smas.test;
+package io.github.arkobat.smas.test;
 
-import io.githib.arkobat.smas.ConsoleColor;
+import io.github.arkobat.smas.ConsoleColor;
 
 public interface Testable {
 

@@ -1,10 +1,10 @@
-package io.githib.arkobat.smas.test;
+package io.github.arkobat.smas.test;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import io.githib.arkobat.smas.IRandom;
+import io.github.arkobat.smas.IRandom;
 
 // Anni
 public class Runs implements Testable {

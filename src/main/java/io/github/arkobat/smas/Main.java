@@ -1,6 +1,9 @@
-package io.githib.arkobat.smas;
+package io.github.arkobat.smas;
 
-import io.githib.arkobat.smas.test.*;
+import io.github.arkobat.smas.test.Autocorrelation;
+import io.github.arkobat.smas.test.ChiSq;
+import io.github.arkobat.smas.test.KolmogorovSmirnov;
+import io.github.arkobat.smas.test.Runs;
 
 import java.util.function.Supplier;
 
@@ -11,14 +14,14 @@ public class Main {
             101_427,
             321,
             (long) Math.pow(2, 16),
-            123456789
+            SEED
     );
 
     public static final Supplier <IRandom> RANDOM_TWO = () -> new LinearCongruentialRandom(
             65_539,
             0,
             (long) Math.pow(2, 31),
-            123456789
+            SEED
     );
 
     public static void main(String[] args) {
