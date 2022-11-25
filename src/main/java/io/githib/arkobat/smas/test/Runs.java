@@ -18,6 +18,7 @@ public class Runs implements Testable {
     private final List<Double> values = new ArrayList<>();
 
     List<Integer> lengthList = new ArrayList<>();
+    // List<String> crocodileList = new ArrayList<>();
 
     public Runs(IRandom random_1, IRandom random_2, int numbers) {
         this.random_1 = random_1;
@@ -46,23 +47,53 @@ public class Runs implements Testable {
         countRuns(values);
         values.clear();
     }
+    /*
+     * private void countCrocodiles(List<Double> values) {
+     * for (int i = 0; i < values.size() - 1; i++) {
+     * if (values.get(i) < values.get(i + 1)) {
+     * crocodileList.add("<");
+     * }
+     * else {
+     * crocodileList.add(">");
+     * }
+     * }
+     * }
+     */
 
     private void countRuns(List<Double> values) {
-        int runs = 1;
         int length = 1;
-        for (int i = 0; i < values.size() - 2; i++) {
-            if (values.get(i) < values.get(i + 1) && values.get(i + 1) < values.get(i + 2)
-                    || values.get(i) > values.get(i + 1) && values.get(i + 1) > values.get(i + 2)) {
-                length++;
-            } else {
 
+        // fix length for values, arrays start at 0, might not get the last number
+        for (int i = 0; i < values.size() - 2; i++) {
+            if (values.get(i) < values.get(i + 1)
+                    && values.get(i + 1) < values.get(i + 2)
+                    || values.get(i) > values.get(i + 1)
+                            && values.get(i + 1) > values.get(i + 2)) {
+                length++;
+                // last case
+                // actually gives: 4.13187384203095
+                // supposed to give : 4.130859
+                // -0,00101484203095 wrong
+                // skal den være der? 
+                //det bliver mere forkert hvis jeg sletter den, men så er fejlen positiv
+                if (values.get(i + 2) == values.get(values.size() - 1)) {
+                    lengthList.add(length);
+                    length = 1;
+                }
+            } else {
+                // last case
+                // actually gives: 10.092822005498583
+                // supposed to give: 10.0931221
+                // 0,000300094501416 wrong
+                if (values.get(i + 2) == values.get(values.size() - 1)) {
+                    lengthList.add(length);
+                    length = 1;
+                }
                 lengthList.add(length);
                 length = 1;
-                runs++;
             }
         }
         mapResults(lengthList);
-        runs = 1;
         length = 1;
         lengthList.clear();
     }
@@ -96,18 +127,18 @@ public class Runs implements Testable {
         for (Map.Entry<Integer, Integer> entry : lengthList.entrySet()) {
             int i = entry.getKey();
             int o = entry.getValue();
-            double e = 2D / factorial(i + 3) * (n *
+            double e = 2D / factorial(i + 3) * 
+                    (n *
                     (Math.pow(i, 2) + 3 * i + 1) -
-                    (Math.pow(i, 3) + +3 * Math.pow(i, 2) - 4));
+                    (Math.pow(i, 3) + 3 * Math.pow(i, 2) - i - 4));
             double x = Math.pow(e - o, 2) / e;
             RunsResults results = new RunsResults(i, e, o, x);
             results2.add(results);
             xList.add(x);
-            //get the sum of the x values in xList
+            // get the sum of the x values in xList
             sum = xList.stream().mapToDouble(Double::doubleValue).sum();
         }
-      //  System.out.println(results2 + "\n");
-        System.out.println("Chi^2 Value = " + sum);
+        System.out.println("Chi^2 Value = " + sum + "\n");
     }
 
     @Getter
