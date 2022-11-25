@@ -17,8 +17,8 @@ public class Runs implements Testable {
     private final IRandom random_1, random_2;
     private final List<Double> values = new ArrayList<>();
 
+    int dof;
     List<Integer> lengthList = new ArrayList<>();
-    // List<String> crocodileList = new ArrayList<>();
 
     public Runs(IRandom random_1, IRandom random_2, int numbers) {
         this.random_1 = random_1;
@@ -47,44 +47,21 @@ public class Runs implements Testable {
         countRuns(values);
         values.clear();
     }
-    /*
-     * private void countCrocodiles(List<Double> values) {
-     * for (int i = 0; i < values.size() - 1; i++) {
-     * if (values.get(i) < values.get(i + 1)) {
-     * crocodileList.add("<");
-     * }
-     * else {
-     * crocodileList.add(">");
-     * }
-     * }
-     * }
-     */
 
     private void countRuns(List<Double> values) {
         int length = 1;
 
-        // fix length for values, arrays start at 0, might not get the last number
         for (int i = 0; i < values.size() - 2; i++) {
             if (values.get(i) < values.get(i + 1)
                     && values.get(i + 1) < values.get(i + 2)
                     || values.get(i) > values.get(i + 1)
                             && values.get(i + 1) > values.get(i + 2)) {
                 length++;
-                // last case
-                // actually gives: 4.13187384203095
-                // supposed to give : 4.130859
-                // -0,00101484203095 wrong
-                // skal den være der? 
-                //det bliver mere forkert hvis jeg sletter den, men så er fejlen positiv
                 if (values.get(i + 2) == values.get(values.size() - 1)) {
                     lengthList.add(length);
                     length = 1;
                 }
             } else {
-                // last case
-                // actually gives: 10.092822005498583
-                // supposed to give: 10.0931221
-                // 0,000300094501416 wrong
                 if (values.get(i + 2) == values.get(values.size() - 1)) {
                     lengthList.add(length);
                     length = 1;
@@ -123,31 +100,44 @@ public class Runs implements Testable {
         final int n = 10000;
         double sum = 0;
         final List<Double> xList = new ArrayList<>();
-        List<RunsResults> results2 = new ArrayList<>();
+       // List<RunsResults> results2 = new ArrayList<>();
         for (Map.Entry<Integer, Integer> entry : lengthList.entrySet()) {
             int i = entry.getKey();
             int o = entry.getValue();
-            double e = 2D / factorial(i + 3) * 
+            double e = 2D / factorial(i + 3) *
                     (n *
-                    (Math.pow(i, 2) + 3 * i + 1) -
-                    (Math.pow(i, 3) + 3 * Math.pow(i, 2) - i - 4));
+                            (Math.pow(i, 2) + 3 * i + 1) -
+                            (Math.pow(i, 3) + 3 * Math.pow(i, 2) - i - 4));
             double x = Math.pow(e - o, 2) / e;
-            RunsResults results = new RunsResults(i, e, o, x);
-            results2.add(results);
             xList.add(x);
             // get the sum of the x values in xList
             sum = xList.stream().mapToDouble(Double::doubleValue).sum();
         }
-        System.out.println("Chi^2 Value = " + sum + "\n");
+        checkChiSquared(sum, xList.size());
     }
 
-    @Getter
-    @AllArgsConstructor
-    @ToString
-    public class RunsResults {
-        private int i;
-        private double e;
-        private int o;
-        private double x;
+    private void checkChiSquared(double chiSquared, int dof) {
+        // Create a map of degrees of freedom and critical values for 5% significance level
+        Map<Integer, Double> criticalValues = new HashMap<Integer, Double>() {
+            {
+                put(1, 3.84);
+                put(2, 5.99);
+                put(3, 7.81);
+                put(4, 9.49);
+                put(5, 11.07);
+                put(6, 12.59);
+                put(7, 14.07);
+                put(8, 15.51);
+                put(9, 16.92);
+                put(10, 18.31);
+            }
+        };
+
+        double criticalValue = criticalValues.get(dof);
+        boolean result = chiSquared <= criticalValue;
+        System.out.println("Chi-squared compared to the critical value:");
+        System.out.println(chiSquared + " <= " + criticalValue + ": " + result);
+        System.out.println("The null hypothesis is therefore " + (result ? "not " : "") + "rejected");
+        System.out.println();
     }
 }
